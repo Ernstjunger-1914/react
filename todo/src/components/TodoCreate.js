@@ -108,7 +108,7 @@ function TodoCreate() {
               autoFocus
               onChange={onChange}
               value={value}
-              placeholder="할 일을 입력 후, Enter 를 누르세요"
+              placeholder="할 일을 입력 후, Enter를 누르시오."
             />
           </InsertForm>
         </InsertFormPositioner>
