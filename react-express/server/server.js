@@ -15,6 +15,10 @@ app.get('/', (req, res)=> {
 app.post('/ssd', (req, res)=> {
     const server_id=req.body.getid;
     console.log(server_id);
+    const sendMessage={
+        text: "손소독",
+    };
+    res.send(sendMessage);
 })
 
 app.listen(port, ()=> {

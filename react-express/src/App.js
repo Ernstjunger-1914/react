@@ -23,6 +23,10 @@ export default class App extends Component {
         "content-type": "application/json"
       },
       body: JSON.stringify(post)
+    }).then((res)=>res.json()).then((json)=> {
+      this.setState({
+        id: json.text,
+      })
     })
   };
 
