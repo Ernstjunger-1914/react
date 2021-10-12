@@ -6,6 +6,7 @@ function App() {
   const [postname, setPostName]=useState('');
   const [main, setMain]=useState('');
   const [postList, setPostList]=useState([]);
+  const [newMain, setNewMain]=useState('');
 
   useEffect(()=> {
     Axios.get('http://localhost:3033/api/get').then((Response)=> {
@@ -22,6 +23,14 @@ function App() {
 
   const deletePost=(post)=> {
     Axios.delete(`http://localhost:3033/api/delete/${post}`);
+  }
+
+  const updatePost=(post)=> {
+    Axios.put('http://localhost:3033/api/update', {
+      postname: post,
+      main: newMain,
+    });
+    setNewMain('')
   }
 
   return (
@@ -47,8 +56,10 @@ function App() {
               <h1>{val.postname}</h1>
               <p>{val.main}</p>
               <button onClick={()=> {deletePost(val.postname)}}>Delete</button>
-              <input type="text" id="updateinput" />
-              <button>Update</button>
+              <input type="text" id="updateinput" onChange={(e)=> {
+                setNewMain(e.target.value)
+              }} />
+              <button onClick={()=> {updatePost(val.postname)}}>Update</button>
             </div>
           );
         })}

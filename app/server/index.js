@@ -47,6 +47,18 @@ app.delete('/api/delete/:postname', (req, res)=> {
     });
 });
 
+app.put('/api/update', (req, res)=> {
+    const name=req.body.postname;
+    const main=req.body.main;
+    const sqlupdate="update content set main=? where postname=?";
+
+    db.query(sqlupdate, [main, name], (err, result)=> {
+        if(err) {
+            console.log(err);
+        }
+    });
+});
+
 app.listen(3033, ()=>{
     console.log("Running on port 3033");
 });
