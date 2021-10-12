@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import './App.css';
 
 function App() {
   const [postname, setPostName]=useState('');
   const [main, setMain]=useState('');
+  const [postList, setPostList]=useState([]);
+
+  useEffect(()=> {
+    Axios.get('http://localhost:3033/api/get').then((Response)=> {
+      setPostList(Response.data);
+    });
+  }, []);
 
   const submitpost=()=> {
     Axios.post('http://localhost:3033/api/insert', {postname: postname, main: main}).then(()=> {
-      alert("successful");
+        setPostList([...postList, {postname: postname, main: main},
+      ]);
     });
+  }
+
+  const deletePost=(post)=> {
+    Axios.delete(`http://localhost:3033/api/delete/${post}`);
   }
 
   return (
@@ -28,6 +40,18 @@ function App() {
         }} />
 
         <button onClick={submitpost}>Submit</button>
+
+        {postList.map((val)=> {
+          return (
+            <div className="card">
+              <h1>{val.postname}</h1>
+              <p>{val.main}</p>
+              <button onClick={()=> {deletePost(val.postname)}}>Delete</button>
+              <input type="text" id="updateinput" />
+              <button>Update</button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
