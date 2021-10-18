@@ -18,13 +18,13 @@ function App() {
       <h1>Application</h1>
       <BrowserRouter>
         <Switch>
-          <Route path="/dashboard">
+          <Route path="/dashboard" exact>
             <Dashboard />
           </Route>
-          <Route path="/login">
+          <Route path="/login" exact>
             <Login />
           </Route>
-          <Route path="/preferences">
+          <Route path="/preferences" exact>
             <Preferences />
           </Route>
         </Switch>
