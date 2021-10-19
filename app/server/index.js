@@ -1,8 +1,10 @@
 const express=require('express');
 const mysql=require('mysql');
 const cors=require('cors');
+const bcrypt=require('bcrypt');
 
 const app=express();
+const saltRounds=10;
 
 const db=mysql.createConnection({
     user: 'root',
@@ -28,9 +30,15 @@ app.post('/login', (req, res)=> {
         }
 
         if(result.length>0) {
-            res.send(result);
+            bcrypt.compare(password, result[0].password, (error, response)=> {
+                if(response) {
+                    res.send(result);
+                } else {
+                    res.send({message: "worng username or password combination"});
+                }
+            })
         } else {
-            res.send({message: "worng username or password combination"});
+            res.send({message: "user doesn't exitst"});
         }
     });
 });
@@ -39,8 +47,16 @@ app.post('/register', (req, res)=> {
     const username=req.body.username;
     const password=req.body.password;
 
-    db.query("insert into accounts(username, password) values(?, ?)", [username, password], (err, result)=> {
-        console.log(err);
+    bcrypt.hash(password, saltRounds, (err, hash)=> {
+        if(err) {
+            console.log(err);
+        }
+    })
+
+    bcrypt.hash(password, saltRounds, (err, hash)=> {
+        db.query("insert into accounts(username, password) values(?, ?)", [username, hash], (err, result)=> {
+            console.log(err);
+        });
     });
 });
 

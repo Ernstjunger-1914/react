@@ -9,6 +9,8 @@ function App() {
   const [username, setUsername]=useState('');
   const [password, setPassword]=useState('');
 
+  const [loginStatus, setLoginStatus]=useState('');
+
   const register=()=> {
     Axios.post("http://localhost:3033/register", {
       username: usernameReg,
@@ -23,7 +25,13 @@ function App() {
       username: username,
       password: password,
     }).then((response)=> {
-      console.log(response);
+      if(response.data.message) {
+        setLoginStatus(response.data.message);
+      } else {
+        setLoginStatus(response.data[0].username);
+      }
+      
+      console.log(response.data);
     });
   };
 
@@ -51,6 +59,7 @@ function App() {
         }} />
         <button onClick={login}> Login </button>
       </div>
+      <h1>{loginStatus}</h1>
     </div>
   );
 }
