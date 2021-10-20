@@ -7,9 +7,10 @@ const bodyParser=require('body-parser');
 const session=require('express-session');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const dataRouter=require('./routes/data');
+const dataRouter=require('./routes/data.js');
+const router = require('./routes/index');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +33,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-app.use('/api', dataRouter);
+app.use('/data', dataRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

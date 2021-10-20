@@ -18,14 +18,17 @@ function App() {
       <h1>Application</h1>
       <BrowserRouter>
         <Switch>
-          <Route path="/dashboard" exact>
+          <Route exact path='/dashboard'>
             <Dashboard />
           </Route>
-          <Route path="/login" exact>
+          <Route exact path='/login'>
             <Login />
           </Route>
-          <Route path="/preferences" exact>
+          <Route exact path='/preferences'>
             <Preferences />
+          </Route>
+          <Route exact path='/logout'>
+            
           </Route>
         </Switch>
       </BrowserRouter>
