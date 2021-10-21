@@ -1,65 +1,69 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import './App.css';
 
 function App() {
-  const [usernameReg, setUsernameReg]=useState('');
-  const [passwordReg, setPasswordReg]=useState('');
+  const [postname, setPostName]=useState('');
+  const [main, setMain]=useState('');
+  const [postList, setPostList]=useState([]);
+  const [newMain, setNewMain]=useState('');
 
-  const [username, setUsername]=useState('');
-  const [password, setPassword]=useState('');
-
-  const [loginStatus, setLoginStatus]=useState('');
-
-  const register=()=> {
-    Axios.post("http://localhost:3033/register", {
-      username: usernameReg,
-      password: passwordReg,
-    }).then((response)=> {
-      console.log(response);
+  useEffect(()=> {
+    Axios.get('http://localhost:3033/api/get').then((Response)=> {
+      setPostList(Response.data);
     });
-  };
+  }, []);
 
-  const login=()=> {
-    Axios.post("http://localhost:3033/login", {
-      username: username,
-      password: password,
-    }).then((response)=> {
-      if(response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-        setLoginStatus(response.data[0].username);
-      }
-      
-      console.log(response.data);
+  const submitpost=()=> {
+    Axios.post('http://localhost:3033/api/insert', {postname: postname, main: main}).then(()=> {
+        setPostList([...postList, {postname: postname, main: main},
+      ]);
     });
-  };
+  }
+
+  const deletePost=(post)=> {
+    Axios.delete(`http://localhost:3033/api/delete/${post}`);
+  }
+
+  const updatePost=(post)=> {
+    Axios.put('http://localhost:3033/api/update', {
+      postname: post,
+      main: newMain,
+    });
+    setNewMain('')
+  }
 
   return (
     <div className="App">
-      <div className="registration">
-        <h1>Registration</h1>
-        <label>UserName</label>
-        <input type="text" onChange={(e)=> {
-          setUsernameReg(e.target.value);
+      <h1>CRUD</h1>
+
+      <div className="form">
+        <label>Content Name</label>
+        <input type="text" name="postname" onChange={(e)=> {
+          setPostName(e.target.value)
         }} />
-        <label>Password</label>
-        <input type="password" onChange={(e)=> {
-          setPasswordReg(e.target.value);
+
+        <label>Main</label>
+        <input type="text" name="main"  onChange={(e)=> {
+          setMain(e.target.value)
         }} />
-        <button onClick={register}> Register </button>
+
+        <button onClick={submitpost}>Submit</button>
+
+        {postList.map((val)=> {
+          return (
+            <div className="card">
+              <h1>{val.postname}</h1>
+              <p>{val.main}</p>
+              <button onClick={()=> {deletePost(val.postname)}}>Delete</button>
+              <input type="text" id="updateinput" onChange={(e)=> {
+                setNewMain(e.target.value)
+              }} />
+              <button onClick={()=> {updatePost(val.postname)}}>Update</button>
+            </div>
+          );
+        })}
       </div>
-      <div className="login">
-        <h1>Login</h1>
-        <input type="text" placeholder="username" onChange={(e)=> {
-          setUsername(e.target.value);
-        }} />
-        <input type="password" placeholder="password" onChange={(e)=> {
-          setPassword(e.target.value);
-        }} />
-        <button onClick={login}> Login </button>
-      </div>
-      <h1>{loginStatus}</h1>
     </div>
   );
 }

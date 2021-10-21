@@ -1,24 +1,17 @@
 const express=require('express');
-const mysql=require('mysql');
 const cors=require('cors');
 const bcrypt=require('bcrypt');
 const bodyPaser=require('body-parser');
 const session=require('express-session');
 const cookieParser=require('cookie-parser');
+const db=require('./mysql/db');
 
 const app=express();
 const saltRounds=10;
 
-const db=mysql.createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: '0000',
-    database: 'data'
-});
-
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3030'],
     methods: ['GET', 'POST'],
     credentials: true
 }));
@@ -86,6 +79,52 @@ app.post('/register', (req, res)=> {
         db.query("insert into accounts(username, password) values(?, ?)", [username, hash], (err, result)=> {
             console.log(err);
         });
+    });
+});
+
+app.get('/api', (req, res)=> {
+    res.send("API");
+})
+
+app.get('/api/get', (req, res)=> {
+    const sqlselect="select * from content";
+
+    db.query(sqlselect, (err, result)=> {
+        res.send(result);
+        console.log(result);
+    });
+});
+
+app.post('/api/insert', (req, res)=> {
+    const postname=req.body.postname;
+    const main=req.body.main;
+    const sqlinsert="insert into content(postname, main) values(?, ?)"
+
+    db.query(sqlinsert, [postname, main], (err, result)=> {
+        console.log(result);
+    });
+});
+
+app.delete('/api/delete/:postname', (req, res)=> {
+    const name=req.params.postname;
+    const sqldelete="delete from content where postname=?";
+
+    db.query(sqldelete, name, (err, result)=> {
+        if(err) {
+            console.log(err);
+        }
+    });
+});
+
+app.put('/api/update', (req, res)=> {
+    const name=req.body.postname;
+    const main=req.body.main;
+    const sqlupdate="update content set main=? where postname=?";
+
+    db.query(sqlupdate, [main, name], (err, result)=> {
+        if(err) {
+            console.log(err);
+        }
     });
 });
 
