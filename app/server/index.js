@@ -65,7 +65,7 @@ app.post('/login', (req, res)=> {
                 } else {
                     res.send({message: "worng username or password combination"});
                 }
-            })
+            });
         } else {
             res.send({message: "user doesn't exitst"});
         }
@@ -80,7 +80,7 @@ app.post('/register', (req, res)=> {
         if(err) {
             console.log(err);
         }
-    })
+    });
 
     bcrypt.hash(password, saltRounds, (err, hash)=> {
         db.query("insert into accounts(username, password) values(?, ?)", [username, hash], (err, result)=> {
@@ -91,5 +91,5 @@ app.post('/register', (req, res)=> {
 
 app.listen(3033, ()=> {
     console.log("running on port 3033");
-})
+});
 
