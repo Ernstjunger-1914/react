@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
+import { Route, Link, Router } from 'react-router-dom';
 import Axios from 'axios';
 import './App.css';
+import Login from './Login';
+import Register from './Register';
 
 function App() {
+
   const [postname, setPostName]=useState('');
   const [main, setMain]=useState('');
   const [postList, setPostList]=useState([]);
   const [newMain, setNewMain]=useState('');
+  Axios.defaults.withCredentials = true;
 
   useEffect(()=> {
     Axios.get('http://localhost:3033/api/get').then((Response)=> {
@@ -15,6 +20,15 @@ function App() {
   }, []);
 
   const submitpost=()=> {
+    if(postname==='') {
+      alert('제목을 입력해주시오.');
+
+      return false;
+    } else if(main==='') {
+      alert("내용을 입력해주시오.");
+
+      return false;
+    }
     Axios.post('http://localhost:3033/api/insert', {postname: postname, main: main}).then(()=> {
         setPostList([...postList, {postname: postname, main: main},
       ]);
@@ -26,16 +40,19 @@ function App() {
   }
 
   const updatePost=(post)=> {
-    Axios.put('http://localhost:3033/api/update', {
+    Axios.patch('http://localhost:3033/api/update', {
       postname: post,
       main: newMain,
+    }).then(() => {
+      setNewMain('')
     });
-    setNewMain('')
   }
 
   return (
     <div className="App">
-      <h1>CRUD</h1>
+      <header>
+        <h1>CRUD</h1>
+      </header>
 
       <div className="form">
         <label>Content Name</label>

@@ -12,7 +12,7 @@ const saltRounds=10;
 app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:3030'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true
 }));
 
@@ -63,6 +63,12 @@ app.post('/login', (req, res)=> {
             res.send({message: "user doesn't exitst"});
         }
     });
+});
+
+app.post('/logout', (req, res)=> {
+    return {loggedIn: false};
+
+    location.href='http://localhost:3030/login';
 });
 
 app.post('/register', (req, res)=> {
@@ -116,7 +122,7 @@ app.delete('/api/delete/:postname', (req, res)=> {
     });
 });
 
-app.put('/api/update', (req, res)=> {
+app.patch('/api/update', (req, res)=> {
     const name=req.body.postname;
     const main=req.body.main;
     const sqlupdate="update content set main=? where postname=?";
@@ -127,6 +133,10 @@ app.put('/api/update', (req, res)=> {
         }
     });
 });
+
+app.post('/logout', ()=> {
+
+})
 
 app.listen(3033, ()=> {
     console.log("running on port 3033");
