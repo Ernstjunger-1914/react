@@ -48,7 +48,7 @@ input {
   margin: 10px;
 }
 
-header {
+.header {
   width: 100%;
   background-color: #777;
   padding: 15px;

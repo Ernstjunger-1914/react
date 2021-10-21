@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Link, Router } from 'react-router-dom';
+import { Route, Link, Router, Switch } from 'react-router-dom';
 import Axios from 'axios';
 import './App.css';
 import Login from './Login';
@@ -29,6 +29,7 @@ function App() {
 
       return false;
     }
+    
     Axios.post('http://localhost:3033/api/insert', {postname: postname, main: main}).then(()=> {
         setPostList([...postList, {postname: postname, main: main},
       ]);
@@ -50,9 +51,7 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        <h1>CRUD</h1>
-      </header>
+      <nav className="header"></nav>
 
       <div className="form">
         <label>Content Name</label>
@@ -61,7 +60,7 @@ function App() {
         }} />
 
         <label>Main</label>
-        <input type="text" name="main"  onChange={(e)=> {
+        <input type="text" name="main" onChange={(e)=> {
           setMain(e.target.value)
         }} />
 
