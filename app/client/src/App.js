@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <nav className="header">
       </nav>
-
+      Home page
       <BrowserRouter>
         <Switch>
           <Route exact path='/todo' component={Todo} />

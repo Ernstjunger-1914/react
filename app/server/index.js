@@ -53,11 +53,21 @@ app.post('/login', (req, res)=> {
             bcrypt.compare(password, result[0].password, (error, response)=> {
                 if(response) {
                     req.session.user=result;
+                    req.session.loggedIn=true;
+                    app.use(session({
+                        secret: 'secret',
+                        resave: false,
+                        saveUninitialized: true,
+                        //store: sessionStorage,
+                        cookie: {
+                            maxAge: 1000*60*60*24
+                        }
+                    }));
                     console.log(req.session.user);
-                    res.send(result);
                 } else {
                     res.send({message: "worng username or password combination"});
                 }
+                //res.end();
             });
         } else {
             res.send({message: "user doesn't exitst"});
