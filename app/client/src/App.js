@@ -10,9 +10,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <nav className="header">
-        <Link to='/todo' className="menu"><button>Todo</button></Link>
-        <Link to='/login' className="menu"><button>로그인</button></Link>
-        <Link to='/register' className="menu"><button>회원가입</button></Link>
+        <Link to='/todo'><button className="menu">Todo</button></Link>
+        <Link to='/login'><button className="menu">로그인</button></Link>
+        <Link to='/register'><button className="menu">회원가입</button></Link>
       </nav>
         <Switch>
           <Route exact path='/todo' component={Todo} />

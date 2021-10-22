@@ -57,11 +57,9 @@ input {
 }
 
 .menu {
+  text-align: center;
   margin: 15px;
-}
-
-button {
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px;
 }
 
