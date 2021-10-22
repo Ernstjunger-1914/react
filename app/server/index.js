@@ -76,9 +76,7 @@ app.post('/login', (req, res)=> {
 });
 
 app.post('/logout', (req, res)=> {
-    return {loggedIn: false};
-
-    location.href='http://localhost:3030/login';
+    localStorage.removeItem();
 });
 
 app.post('/register', (req, res)=> {

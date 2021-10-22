@@ -56,3 +56,12 @@ input {
   height: 50px;
 }
 
+.menu {
+  margin: 15px;
+}
+
+button {
+  font-size: 18px;
+  padding: 10px;
+}
+
